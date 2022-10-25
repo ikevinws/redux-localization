@@ -13,6 +13,7 @@ interface Translations {
 interface Options {
     defaultLanguage?: string;
     missingTranslation: string;
+    onMissingActiveLanguageTranslation?: "default" | "missingTranslation";
 }
 
 export interface LocalizeSliceState {
@@ -41,6 +42,7 @@ const initialState: LocalizeSliceState = {
     activeLanguage: null,
     options: {
         missingTranslation: "No default translation",
+        onMissingActiveLanguageTranslation: "default",
     },
 };
 
@@ -91,18 +93,30 @@ export const localizationSlice = createSlice({
     },
 });
 
-export const { initialize, addTranslationForLanguage } =
-    localizationSlice.actions;
+export const {
+    initialize,
+    addTranslationForLanguage,
+    setActiveLanguage,
+    setOptions,
+} = localizationSlice.actions;
 
 export const getTranslate = (state: LocalizeSliceState) => {
     return (translateId: string) => {
         if (!state.activeLanguage) return state.options.missingTranslation;
 
-        return (
-            state.translations[translateId]?.[state.activeLanguage] ??
-            (state.options.defaultLanguage &&
-                state.translations[translateId]?.[state.options.defaultLanguage])
-        );
+        const activeLanguageTranslation =
+            state.translations[translateId]?.[state.activeLanguage];
+
+        if (activeLanguageTranslation) {
+            return activeLanguageTranslation;
+        } else if (
+            state.options.onMissingActiveLanguageTranslation === "default" &&
+            state.options.defaultLanguage
+        ) {
+            return state.translations[translateId]?.[state.options.defaultLanguage];
+        } else {
+            return state.options.missingTranslation;
+        }
     };
 };
 
