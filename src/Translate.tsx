@@ -1,6 +1,6 @@
-import { getMissingTranslation, getTranslate } from "localizationSlice";
-import { ReactNode } from "react";
-import { useSelector } from "react-redux";
+import { getMissingTranslation, getTranslate } from 'localizationSlice';
+import { ReactNode } from 'react';
+import { useSelector } from 'react-redux';
 
 interface TranslateProps {
     id: string;

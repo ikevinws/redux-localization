@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface Language {
     name: string;
@@ -13,7 +13,7 @@ interface Translations {
 interface Options {
     defaultLanguage?: string;
     missingTranslation: string;
-    onMissingActiveLanguageTranslation?: "default" | "missingTranslation";
+    onMissingActiveLanguageTranslation?: 'default' | 'missingTranslation';
 }
 
 export interface LocalizeSliceState {
@@ -41,13 +41,13 @@ const initialState: LocalizeSliceState = {
     translations: {},
     activeLanguage: null,
     options: {
-        missingTranslation: "No default translation",
-        onMissingActiveLanguageTranslation: "default",
+        missingTranslation: 'No default translation',
+        onMissingActiveLanguageTranslation: 'default',
     },
 };
 
 export const localizationSlice = createSlice({
-    name: "localization",
+    name: 'localization',
     initialState,
     reducers: {
         initialize: (state, action: PayloadAction<InitializePayloadAction>) => {
@@ -56,12 +56,13 @@ export const localizationSlice = createSlice({
             if (translations) state.translations = translations;
             if (options) {
                 state.options = {
-                    missingTranslation: "No default translation",
+                    missingTranslation: 'No default translation',
                     ...options,
                 };
             }
             state.languages = languages;
-            state.activeLanguage = options?.defaultLanguage || languages[0].code;
+            state.activeLanguage =
+                options?.defaultLanguage || languages[0].code;
         },
         addTranslationForLanguage: (
             state,
@@ -110,10 +111,12 @@ export const getTranslate = (state: LocalizeSliceState) => {
         if (activeLanguageTranslation) {
             return activeLanguageTranslation;
         } else if (
-            state.options.onMissingActiveLanguageTranslation === "default" &&
+            state.options.onMissingActiveLanguageTranslation === 'default' &&
             state.options.defaultLanguage
         ) {
-            return state.translations[translateId]?.[state.options.defaultLanguage];
+            return state.translations[translateId]?.[
+                state.options.defaultLanguage
+            ];
         } else {
             return state.options.missingTranslation;
         }

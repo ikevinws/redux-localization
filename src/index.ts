@@ -1,3 +1,3 @@
-export * from "./localizationSlice";
+export * from './localizationSlice';
 
-export { default as Translate } from "./Translate";
+export { default as Translate } from './Translate';
